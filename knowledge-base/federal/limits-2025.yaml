@@ -1,0 +1,127 @@
+# 2025 Federal Tax Limits and Thresholds
+# Source: IRS announcements, Revenue Procedures
+
+tax_year: 2025
+
+# =============================================================================
+# RETIREMENT CONTRIBUTION LIMITS
+# =============================================================================
+
+retirement:
+  # 401(k), 403(b), 457
+  401k_elective_deferral: 23500
+  401k_catchup_50_plus: 7500
+  401k_total_employee_50_plus: 31000
+  401k_total_all_sources: 70000
+
+  # IRA
+  ira_contribution: 7000
+  ira_catchup_50_plus: 1000
+  ira_total_50_plus: 8000
+
+  # SEP IRA
+  sep_ira_max: 70000
+  sep_ira_percent: 0.25  # 25% of compensation
+
+  # SIMPLE IRA
+  simple_ira_elective: 16500
+  simple_ira_catchup: 3500
+
+# =============================================================================
+# HSA LIMITS
+# =============================================================================
+
+hsa:
+  self_only: 4300
+  family: 8550
+  catchup_55_plus: 1000
+
+# =============================================================================
+# FSA LIMITS
+# =============================================================================
+
+fsa:
+  health_fsa: 3300
+  dependent_care_fsa: 5000
+  carryover_max: 660
+
+# =============================================================================
+# INCOME LIMITS FOR DEDUCTIONS/CONTRIBUTIONS
+# =============================================================================
+
+income_limits:
+  # Roth IRA contribution phase-out
+  roth_ira:
+    mfj_full: 230000
+    mfj_phaseout_end: 240000
+    single_full: 150000
+    single_phaseout_end: 165000
+
+  # Traditional IRA deduction phase-out (if covered by employer plan)
+  traditional_ira_deduction:
+    mfj_full: 130000
+    mfj_phaseout_end: 150000
+    single_full: 79000
+    single_phaseout_end: 89000
+
+  # $25K passive loss allowance phase-out
+  passive_loss_allowance:
+    phaseout_start: 100000
+    phaseout_end: 150000
+
+  # Child tax credit phase-out
+  child_tax_credit:
+    mfj_phaseout_start: 400000
+    single_phaseout_start: 200000
+
+# =============================================================================
+# STANDARD DEDUCTION
+# =============================================================================
+
+standard_deduction:
+  single: 15000
+  mfj: 30000
+  mfs: 15000
+  hoh: 22500
+  additional_65_or_blind:
+    single: 2000
+    married: 1600
+
+# =============================================================================
+# SALT AND OTHER LIMITS
+# =============================================================================
+
+deduction_limits:
+  salt_cap: 10000  # State and Local Tax deduction cap
+  mortgage_interest_debt_limit: 750000  # Acquisition debt for interest deduction
+  charitable_cash_agi_limit: 0.60  # 60% of AGI
+  charitable_stock_agi_limit: 0.30  # 30% of AGI
+  medical_expense_agi_floor: 0.075  # 7.5% of AGI threshold
+
+# =============================================================================
+# GIFT AND ESTATE
+# =============================================================================
+
+gift_estate:
+  annual_gift_exclusion: 19000
+  lifetime_estate_exemption: 13990000
+
+# =============================================================================
+# SOCIAL SECURITY
+# =============================================================================
+
+social_security:
+  wage_base: 176100  # Max earnings subject to SS tax
+  ss_tax_rate: 0.062
+  medicare_tax_rate: 0.0145
+  additional_medicare_threshold_mfj: 250000
+  additional_medicare_rate: 0.009
+
+# =============================================================================
+# ESTIMATED TAX
+# =============================================================================
+
+estimated_tax:
+  safe_harbor_percent: 1.00  # 100% of prior year tax
+  safe_harbor_high_income: 1.10  # 110% if AGI > $150K
+  current_year_percent: 0.90  # Or 90% of current year

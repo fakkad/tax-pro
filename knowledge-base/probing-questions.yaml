@@ -1,0 +1,250 @@
+# Probing Questions — Pattern-Triggered Strategic Insights
+# These are the "have you considered..." questions that elite tax advisors ask.
+# Each probe has trigger conditions — when the profile matches, surface the question.
+
+# =============================================================================
+# HIGH-PRIORITY PROBES (Surface first)
+# =============================================================================
+
+probes:
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # RETIREMENT & CONVERSION STRATEGY
+  # ───────────────────────────────────────────────────────────────────────────
+
+  - id: backdoor_roth_pro_rata_trap
+    priority: high
+    trigger:
+      all:
+        - amounts.estimated_agi > 240000  # Over Roth limit
+        - deduction_flags.has_traditional_ira: true
+        - prior_year.balances.traditional_ira > 0
+    question: "You want backdoor Roth but you have a Traditional IRA balance. Have you considered the pro-rata rule?"
+    why: |
+      The pro-rata rule makes backdoor Roth conversions partially taxable when you
+      have any Traditional IRA balance. This is one of the most common mistakes
+      high-income earners make.
+    action: "Roll your Traditional IRA INTO your 401(k) first, then do the backdoor Roth. This zeros out the pro-rata calculation."
+    source: "IRC § 408(d)(2)"
+
+  - id: rsu_withholding_gap
+    priority: high
+    trigger:
+      all:
+        - situation_flags.equity_compensation: true
+        - amounts.estimated_agi > 200000
+    question: "Your RSUs are probably withheld at 22%, but you're in the 32%+ bracket. Have you checked if you're under-withheld?"
+    why: |
+      Supplemental income (RSUs, bonuses) is typically withheld at a flat 22% federal rate.
+      If your marginal bracket is 32% or higher, you're accumulating a tax bill that will
+      hit at filing time.
+    action: "Review YTD withholding vs projected liability. Make a Q4 estimated payment if needed."
+    source: "IRC § 3402(g)"
+
+  - id: suspended_pal_timing
+    priority: high
+    trigger:
+      all:
+        - situation_flags.rental_property: true
+        - situation_flags.prior_year.suspended_pal_losses: true
+      any:
+        - life_events.changed_jobs: true
+        - life_events.retired: true
+    question: "Your rental losses are suspended. With your job change, have you considered timing the property sale?"
+    why: |
+      Suspended passive activity losses (PAL) release in FULL when you fully dispose
+      of the property. A lower-income year (job change, gap year, early retirement)
+      means those losses offset income taxed at a lower rate.
+    action: "If you're planning to sell the rental, consider timing it for a low-income year. Consult CPA on specifics."
+    source: "IRC § 469(g)"
+
+  - id: niit_threshold_management
+    priority: high
+    trigger:
+      all:
+        - amounts.estimated_agi > 230000
+        - amounts.estimated_agi < 270000
+        - income_flags.interest_dividends: true
+    question: "You're near the NIIT threshold ($250K MFJ). Have you considered managing investment income to stay under?"
+    why: |
+      The Net Investment Income Tax adds 3.8% to ALL investment income once your
+      MAGI exceeds $250K (MFJ). If you're close, every dollar of investment income
+      above the threshold costs an extra 3.8 cents.
+    action: "Consider deferring dividend reinvestment, harvesting losses, or timing capital gains to manage threshold."
+    source: "IRC § 1411"
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # RETIREMENT CONTRIBUTION OPTIMIZATION
+  # ───────────────────────────────────────────────────────────────────────────
+
+  - id: spouse_401k_verification
+    priority: high
+    trigger:
+      all:
+        - personal.filing_status: married_filing_jointly
+        - deduction_flags.has_401k: true
+    question: "You have a 401(k). Does your spouse also have access to one? Are both being maxed?"
+    why: |
+      Couples filing jointly can contribute $47,000 combined ($23,500 each) to 401(k)s.
+      At the 32% bracket, maxing both saves over $15,000 in taxes annually. This is
+      often overlooked when one spouse doesn't work or has a less prominent career.
+    action: "Verify spouse has 401(k) access. If both have access, ensure both are contributing the max."
+    source: "IRC § 401(k), limits per IRC § 402(g)"
+
+  - id: mega_backdoor_roth_check
+    priority: medium
+    trigger:
+      all:
+        - deduction_flags.has_401k: true
+        - amounts.estimated_agi > 200000
+    question: "Have you checked if your 401(k) allows after-tax contributions with in-plan Roth conversion (mega backdoor Roth)?"
+    why: |
+      Some 401(k) plans allow after-tax contributions beyond the $23,500 limit, up to
+      $70,000 total. If in-plan Roth conversion is allowed, you can move tens of thousands
+      extra into Roth annually — far more than the $7K IRA limit.
+    action: "Check your plan documents or call HR. Ask: 'Does our 401k allow after-tax contributions and in-plan Roth conversion?'"
+    source: "IRC § 402(g), § 415"
+
+  - id: hsa_family_coverage_verify
+    priority: medium
+    trigger:
+      all:
+        - deduction_flags.has_hsa: true
+        - deduction_flags.hsa_coverage: family
+        - personal.dependents: []  # No dependents listed
+    question: "You indicated family HSA coverage, but I don't see dependents listed. Is your coverage actually family-level?"
+    why: |
+      Family HSA contribution limits ($8,550) are almost double self-only ($4,300).
+      If you're actually on self-only coverage, you may be over-contributing.
+      If you have a spouse on your plan, that counts as family even without children.
+    action: "Verify your health plan coverage level. Spouse on plan = family. Self-only plan = lower HSA limit."
+    source: "IRC § 223(b)(2)"
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # INVESTMENT TAX OPTIMIZATION
+  # ───────────────────────────────────────────────────────────────────────────
+
+  - id: rsu_loss_harvesting_timing
+    priority: medium
+    trigger:
+      all:
+        - situation_flags.equity_compensation: true
+        - income_flags.capital_gains: true
+    question: "You have RSUs and capital gains. Have you considered timing RSU sales to offset with harvested losses?"
+    why: |
+      RSU gain/loss AFTER vesting is capital (not ordinary). If you have underwater
+      RSUs or other losing positions, you can sell to harvest losses and offset gains
+      from winning positions or other RSU sales.
+    action: "Review RSU cost basis vs current price. Sell underwater RSUs before year-end to harvest losses."
+    source: "IRC § 1211"
+
+  - id: margin_interest_deduction
+    priority: medium
+    trigger:
+      all:
+        - income_flags.interest_dividends: true
+        - income_flags.capital_gains: true
+        # Note: No direct flag for margin account, so we ask
+    question: "Do you have a margin account? If so, have you considered deducting margin interest against investment income?"
+    why: |
+      Investment interest expense (margin interest) is deductible up to the amount of
+      net investment income. Many people pay margin interest but forget to deduct it.
+    action: "Get your margin interest statement from your broker. Report on Form 4952."
+    source: "IRC § 163(d)"
+
+  - id: tax_loss_harvesting_reminder
+    priority: medium
+    trigger:
+      all:
+        - income_flags.capital_gains: true
+    question: "You have capital gains. Have you reviewed your portfolio for tax-loss harvesting opportunities before year-end?"
+    why: |
+      Selling losing positions to offset gains can reduce your tax bill significantly.
+      Just be careful of the wash sale rule — don't buy back the same security within
+      30 days before or after the sale.
+    action: "Before Dec 31: Review positions with unrealized losses. Sell to harvest, wait 31 days to rebuy (or buy similar asset)."
+    source: "IRC § 1211, wash sale rule IRC § 1091"
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # DEDUCTION OPTIMIZATION
+  # ───────────────────────────────────────────────────────────────────────────
+
+  - id: charitable_bunching_daf
+    priority: medium
+    trigger:
+      all:
+        - deduction_flags.charitable_donations: true
+        - amounts.estimated_agi > 200000
+    question: "At your income level, have you considered bunching charitable donations with a Donor-Advised Fund?"
+    why: |
+      With the higher standard deduction, many people don't itemize annually. By
+      'bunching' 2-3 years of donations into one year via a DAF, you can exceed
+      the standard deduction and itemize that year, then take standard deduction
+      in other years.
+    action: "Consider contributing 2-3 years of charitable giving to a DAF this year. Distribute grants over time."
+    source: "IRC § 170(f)(18)"
+
+  - id: appreciated_stock_donation
+    priority: medium
+    trigger:
+      all:
+        - deduction_flags.charitable_donations: true
+        - income_flags.capital_gains: true
+    question: "You have charitable donations and capital gains. Have you considered donating appreciated stock directly?"
+    why: |
+      Donating appreciated stock (held >1 year) lets you deduct the full market value
+      AND avoid capital gains tax on the appreciation. Double benefit.
+    action: "Instead of selling stock and donating cash, donate the stock directly to charity or DAF."
+    source: "IRC § 170(e)"
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # LIFE STAGE & PLANNING
+  # ───────────────────────────────────────────────────────────────────────────
+
+  - id: age_55_catchup_reminder
+    priority: low
+    trigger:
+      all:
+        - personal.primary.date_of_birth: # Calculate age >= 50
+    question: "Are you or your spouse 50 or older? Catch-up contributions add $7,500 to 401(k) and $1,000 to IRA limits."
+    why: |
+      Starting at age 50, you can contribute extra to retirement accounts. At 32% bracket,
+      the 401(k) catch-up alone saves $2,400 in taxes.
+    action: "If 50+, increase 401(k) to $31,000 (2025). Increase IRA to $8,000 if contributing."
+    source: "IRC § 414(v)"
+
+  - id: rental_cost_segregation
+    priority: low
+    trigger:
+      all:
+        - situation_flags.rental_property: true
+        - situation_flags.prior_year.suspended_pal_losses: false  # Not already suspended
+    question: "Have you done a cost segregation study on your rental property?"
+    why: |
+      Cost segregation accelerates depreciation, creating larger deductions upfront.
+      However, if your losses are already suspended by PAL rules, it just front-loads
+      suspended losses (limited benefit unless you have passive income to absorb).
+    action: "Only worthwhile if: (1) you have passive income to absorb losses, OR (2) you plan to hold 10+ years. Studies cost $5-15K."
+    source: "IRC § 167, § 1245"
+
+  - id: qbi_deduction_check
+    priority: low
+    trigger:
+      all:
+        - situation_flags.business_ownership: true
+    question: "As a business owner, are you maximizing the 20% Qualified Business Income (QBI) deduction?"
+    why: |
+      The QBI deduction can reduce your effective tax rate on business income by up to
+      20%. But it phases out at higher incomes and has complex rules for service businesses.
+    action: "Review if your business qualifies. Consider strategies to stay under phase-out thresholds."
+    source: "IRC § 199A"
+
+# =============================================================================
+# USAGE NOTES
+# =============================================================================
+# The tax-strategist agent should:
+# 1. Load this file when analyzing a profile
+# 2. Evaluate each probe's trigger conditions against the profile
+# 3. Surface the top 3-5 most relevant questions
+# 4. Present in a "Have You Considered..." section
+# 5. Include the "why" to educate, not just ask

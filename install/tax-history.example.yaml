@@ -1,0 +1,102 @@
+# Tax History — Multi-Year Data for Strategic Analysis
+# Copy to ~/.claude/tax-history.yaml and fill in your data
+# This file enables year-over-year analysis and multi-year projections
+
+# =============================================================================
+# INSTRUCTIONS
+# =============================================================================
+# Fill in data from your prior year tax returns.
+# Not all fields are required — add what you have.
+# The more history you provide, the better the analysis.
+
+tax_history:
+  # ───────────────────────────────────────────────────────────────────────────
+  # PRIOR YEAR (Most Recent Completed Return)
+  # ───────────────────────────────────────────────────────────────────────────
+  2024:
+    # From Form 1040
+    filing_status: "married_filing_jointly"  # or single, mfj, mfs, hoh, qss
+    adjusted_gross_income: 0                  # Line 11
+    taxable_income: 0                         # Line 15
+    total_tax: 0                              # Line 24
+    effective_rate: 0.00                      # total_tax / agi
+
+    # Income breakdown (if known)
+    income:
+      w2_primary: 0
+      w2_spouse: 0
+      rental_net: 0                           # Net from Schedule E
+      dividends: 0
+      interest: 0
+      capital_gains_net: 0
+
+    # Retirement contributions
+    retirement:
+      traditional_401k_primary: 0
+      traditional_401k_spouse: 0
+      roth_401k_primary: 0
+      roth_401k_spouse: 0
+      traditional_ira: 0
+      roth_ira: 0
+      hsa: 0
+
+    # Carryforwards (important for strategy)
+    carryforwards:
+      suspended_pal_total: 0                  # From Form 8582
+      capital_loss_carryforward: 0            # From Schedule D
+      nol_carryforward: 0                     # Net Operating Loss
+
+    # Strategy patterns (what did you do last year?)
+    strategies_used:
+      did_backdoor_roth: false
+      did_roth_conversion: false
+      did_tax_loss_harvesting: false
+      did_charitable_bunching: false
+      did_hsa_maximize: false
+      did_401k_maximize: false
+
+    # Account balances (end of year, for projection purposes)
+    balances:
+      traditional_ira: 0
+      roth_ira: 0
+      traditional_401k: 0
+      roth_401k: 0
+      hsa: 0
+      taxable_brokerage: 0
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # TWO YEARS AGO (Optional but helpful for trends)
+  # ───────────────────────────────────────────────────────────────────────────
+  2023:
+    adjusted_gross_income: 0
+    taxable_income: 0
+    total_tax: 0
+    effective_rate: 0.00
+
+    carryforwards:
+      suspended_pal_total: 0
+      capital_loss_carryforward: 0
+
+    strategies_used:
+      did_backdoor_roth: false
+      did_roth_conversion: false
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # THREE YEARS AGO (Optional, useful for trend analysis)
+  # ───────────────────────────────────────────────────────────────────────────
+  2022:
+    adjusted_gross_income: 0
+    total_tax: 0
+    effective_rate: 0.00
+
+# =============================================================================
+# NOTES
+# =============================================================================
+# Use this section for any context that affects multi-year strategy:
+# - Expected income changes (job change, retirement, sabbatical)
+# - Planned property sales (releases suspended PAL)
+# - Inheritance expectations
+# - Other major financial events
+
+notes: |
+  Add any relevant context here...

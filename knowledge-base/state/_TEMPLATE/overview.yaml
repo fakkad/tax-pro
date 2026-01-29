@@ -1,0 +1,114 @@
+# [STATE NAME] Tax Overview — 2025 Tax Year
+# Copy this template to knowledge-base/state/[ST]/ and fill in
+
+state_code: XX  # Two-letter code
+state_name: "[State Name]"
+tax_authority: "[State] Department of Revenue"
+tax_authority_url: "https://..."
+
+# =============================================================================
+# TAX STRUCTURE
+# =============================================================================
+
+tax_structure:
+  type: graduated  # Options: graduated, flat, none
+
+  # Income Tax Brackets (if graduated)
+  # List from lowest to highest
+  brackets:
+    - min: 0
+      max: 10000
+      rate: 0.02  # 2%
+    - min: 10001
+      max: 50000
+      rate: 0.04  # 4%
+    - min: 50001
+      max: null   # No upper limit
+      rate: 0.06  # 6%
+
+  # If flat rate state, use:
+  # flat_rate: 0.05  # 5%
+
+  # If no income tax (TX, FL, WA, etc.):
+  # type: none
+
+  # Standard Deduction
+  standard_deduction:
+    single: 0
+    married_filing_jointly: 0
+    married_filing_separately: 0
+    head_of_household: 0
+
+  # Personal Exemption (if applicable)
+  personal_exemption:
+    per_person: 0
+    age_65_plus_additional: 0
+
+# =============================================================================
+# FEDERAL CONFORMITY
+# =============================================================================
+
+federal_conformity:
+  # What does the state start with?
+  # Options: federal_agi, federal_taxable_income, own_calculation
+  base: federal_agi
+
+  # State "additions" (add back to federal amount)
+  additions:
+    - id: example_addition
+      description: "Description of what's added back"
+
+  # State "subtractions" (reduce from federal amount)
+  subtractions:
+    - id: example_subtraction
+      description: "Description of what's subtracted"
+      limit: 5000  # If there's a cap
+
+# =============================================================================
+# KEY DEADLINES
+# =============================================================================
+
+deadlines:
+  filing_deadline: "April 15"  # Or state-specific date
+  extension_deadline: "October 15"
+  estimated_payment_dates:
+    q1: "April 15"
+    q2: "June 15"
+    q3: "September 15"
+    q4: "January 15"
+
+# =============================================================================
+# NOTABLE FEATURES
+# =============================================================================
+
+notable_features:
+  - id: feature_1
+    description: "Notable state-specific feature"
+    impact: "How it affects taxpayers"
+
+  - id: feature_2
+    description: "Another notable feature"
+    impact: "Impact description"
+
+# =============================================================================
+# LOCAL TAXES
+# =============================================================================
+
+local_taxes:
+  has_local_income_tax: false  # true if counties/cities have their own tax
+  notes: ""
+
+# =============================================================================
+# RESOURCES
+# =============================================================================
+
+resources:
+  forms:
+    - name: "Form Name"
+      description: "Main state income tax return"
+      url: "https://..."
+
+  online_services:
+    - name: "State Tax Portal"
+      url: "https://..."
+      services: ["File returns", "Make payments", "Check refund"]

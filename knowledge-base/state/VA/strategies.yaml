@@ -1,0 +1,306 @@
+# Virginia-Specific Tax Strategies
+# Strategies that apply specifically to Virginia residents
+
+strategies:
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # 529 PLAN OPTIMIZATION
+  # ───────────────────────────────────────────────────────────────────────────
+
+  - id: va_529_deduction
+    name: "Virginia 529 Contribution Deduction"
+    category: education
+    priority: high
+
+    applicable_when:
+      any:
+        - has_children: true
+        - plans_future_education: true  # Even for yourself
+        - wants_tax_sheltered_growth: true
+
+    benefit:
+      type: deduction
+      amount: "$4,000 per account per year"
+      tax_savings: "$230 per account (at 5.75%)"
+
+    details: |
+      Virginia allows a state tax deduction for contributions to ANY state's 529 plan,
+      but Virginia529 (Invest529) has good options with no residency requirement.
+
+      **Key Points:**
+      - $4,000 deduction per account, per year
+      - No limit on number of accounts
+      - Excess contributions carry forward indefinitely
+      - Can contribute more than $4K — just deduct $4K/year until caught up
+
+      **Strategy for High Earners:**
+      If you have $20K to contribute, you could:
+      1. Contribute $20K this year
+      2. Deduct $4K this year
+      3. Deduct $4K each of the next 4 years (carryforward)
+
+      **Even Without Kids:**
+      You can open a 529 for yourself, a niece/nephew, or future children.
+      If plans change, you can change beneficiaries.
+
+    action: |
+      1. Open Virginia529 account (or use existing 529)
+      2. Contribute at least $4,000 before Dec 31
+      3. Report on Schedule ADJ (Subtractions)
+      4. If contributing more, track carryforward
+
+    deadline: "December 31 for current year deduction"
+    source: "Va. Code § 58.1-322.03"
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # RETIREMENT INCOME SUBTRACTION
+  # ───────────────────────────────────────────────────────────────────────────
+
+  - id: va_retirement_subtraction
+    name: "Age 65+ Retirement Income Subtraction"
+    category: retirement
+    priority: medium
+
+    applicable_when:
+      all:
+        - age >= 65
+        - has_retirement_income: true
+
+    benefit:
+      type: subtraction
+      amount: "Up to $12,000 (varies by birth date)"
+      tax_savings: "Up to $690 (at 5.75%)"
+
+    details: |
+      Virginia provides a subtraction for retirement income for taxpayers 65+.
+      The amount depends on your birth date:
+
+      **Born before 1/1/1939**: Unlimited subtraction
+      **Born 1/1/1939 - 12/31/1952**: $12,000 subtraction
+      **Born after 1/1/1953**: Phased in, income-limited
+
+      For those born after 1952, the subtraction phases out at higher incomes.
+      Check the current year's Schedule ADJ instructions for exact thresholds.
+
+    action: |
+      1. Verify you're 65+ as of tax year end
+      2. Calculate eligible retirement income
+      3. Report on Schedule ADJ (Line 4)
+      4. If born after 1952, check income phase-out
+
+    source: "Va. Code § 58.1-322.02"
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # VIRGINIA VS DC RESIDENCE OPTIMIZATION
+  # ───────────────────────────────────────────────────────────────────────────
+
+  - id: va_dc_residence_choice
+    name: "Virginia vs DC Residence Tax Comparison"
+    category: residency
+    priority: high
+
+    applicable_when:
+      any:
+        - considering_move_to_dc: true
+        - spouse_lives_in_dc: true
+        - works_in_dc: true
+
+    benefit:
+      type: analysis
+      potential_savings: "Significant at higher incomes"
+
+    details: |
+      **Virginia vs DC Tax Comparison (2025):**
+
+      | Income Level | VA Tax | DC Tax | Difference |
+      |--------------|--------|--------|------------|
+      | $100,000 | ~$5,200 | ~$6,500 | VA saves $1,300 |
+      | $200,000 | ~$11,000 | ~$15,500 | VA saves $4,500 |
+      | $350,000 | ~$19,600 | ~$32,000 | VA saves $12,400 |
+      | $500,000 | ~$28,200 | ~$48,000 | VA saves $19,800 |
+
+      **Why the difference:**
+      - Virginia top rate: 5.75% (starts at $17K)
+      - DC top rate: 10.75% (starts at $1M, but 9.75% at $350K)
+      - DC has higher rates at every level above $60K
+
+      **Considerations:**
+      - DC has no car tax; VA does
+      - DC has higher property tax rates
+      - Commute/lifestyle factors
+      - Spouse's work location may affect filing
+
+    action: |
+      1. If both spouses can choose residence, VA is usually better for taxes
+      2. Model your specific situation with both state returns
+      3. Consider total tax burden (income + property + car)
+      4. Don't move JUST for taxes — lifestyle matters
+
+    source: "Va. Code § 58.1-301, DC Code § 47-1806.03"
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # ESTIMATED TAX TIMING
+  # ───────────────────────────────────────────────────────────────────────────
+
+  - id: va_estimated_tax_timing
+    name: "Virginia Estimated Tax Schedule"
+    category: compliance
+    priority: medium
+
+    applicable_when:
+      any:
+        - has_self_employment_income: true
+        - has_significant_investment_income: true
+        - has_rental_income: true
+        - rsus_or_equity_comp: true
+
+    benefit:
+      type: compliance
+      avoids: "Underpayment penalties"
+
+    details: |
+      **Virginia Estimated Tax Due Dates (Different from Federal!):**
+
+      | Quarter | Federal Due | Virginia Due |
+      |---------|-------------|--------------|
+      | Q1 | April 15 | May 1 |
+      | Q2 | June 15 | June 15 |
+      | Q3 | September 15 | September 15 |
+      | Q4 | January 15 | January 15 |
+
+      **Key Difference:** Virginia Q1 is due May 1, not April 15.
+      This gives you extra time after filing your federal return.
+
+      **Safe Harbor:**
+      - Pay 100% of prior year VA tax, OR
+      - Pay 90% of current year VA tax
+
+      **For RSU holders:**
+      If RSUs are under-withheld at federal level, they're likely under-withheld
+      for VA too. Virginia uses 5.75% — check your W-2 Box 17.
+
+    action: |
+      1. Calculate VA estimated tax with federal
+      2. Note Virginia's May 1 Q1 deadline (not April 15)
+      3. Set up VA estimated payments via tax.virginia.gov
+      4. For RSUs: Check if employer withholds VA tax correctly
+
+    source: "Va. Code § 58.1-490"
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # VEHICLE PERSONAL PROPERTY TAX
+  # ───────────────────────────────────────────────────────────────────────────
+
+  - id: va_car_tax_salt
+    name: "Vehicle Personal Property Tax (Car Tax) — SALT Deduction"
+    category: deduction
+    priority: low
+
+    applicable_when:
+      all:
+        - owns_vehicle_in_va: true
+        - itemizes_deductions: true
+
+    benefit:
+      type: federal_deduction
+      notes: "Part of SALT cap"
+
+    details: |
+      Virginia's "car tax" (personal property tax on vehicles) is deductible on
+      your federal return as part of SALT — but remember the $10,000 SALT cap.
+
+      **What qualifies:**
+      - Personal property tax on vehicles (the annual county bill)
+      - Must be based on value (VA car tax is)
+
+      **Likely situation for high earners:**
+      You're probably already hitting the $10K SALT cap with:
+      - State income tax ($15K+)
+      - Real estate property tax ($5K+)
+
+      Adding car tax doesn't help if you're already capped.
+
+      **When it matters:**
+      - If state income + property tax < $10K (unlikely at your income)
+      - If you own multiple expensive vehicles
+
+    action: |
+      1. Keep your car tax bills (county sends annually)
+      2. Add to SALT calculation (Form Schedule A)
+      3. If already at $10K cap, car tax provides no additional benefit
+
+    source: "IRC § 164(b)(5)"
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # RENTAL PROPERTY IN VIRGINIA
+  # ───────────────────────────────────────────────────────────────────────────
+
+  - id: va_rental_property
+    name: "Virginia Rental Property Considerations"
+    category: real_estate
+    priority: medium
+
+    applicable_when:
+      all:
+        - has_rental_property_in_va: true
+
+    benefit:
+      type: awareness
+      notes: "Virginia-specific rental considerations"
+
+    details: |
+      **Virginia Treatment of Rental Income:**
+      - Virginia conforms to federal treatment
+      - Passive losses suspended the same way (PAL rules)
+      - Depreciation follows federal rules
+
+      **Locality Specifics (varies by county):**
+      - Property tax rates vary by county
+      - Personal property tax on furnishings if rented furnished
+      - Business license may be required (BPOL)
+
+      **Short-Term Rentals (Airbnb):**
+      - Transient occupancy tax may apply (varies by locality)
+      - Most Virginia localities: Rentals < 30 days may owe transient tax
+      - 30+ day minimum rentals typically avoid transient tax
+
+      **Virginia 529 Interaction:**
+      Rental income increases your VA AGI, but you can still take the
+      529 deduction to offset some of it.
+
+    action: |
+      1. Verify business license requirements in your locality
+      2. For short-term rentals, check transient occupancy tax rules
+      3. Report rental income on both federal Schedule E and VA return
+      4. Track property tax paid for potential SALT deduction
+
+    source: "Va. Code § 58.1-301 (federal conformity)"
+
+# =============================================================================
+# PROBING QUESTIONS — VIRGINIA SPECIFIC
+# =============================================================================
+
+va_probing_questions:
+
+  - id: va_529_maxed
+    trigger:
+      all:
+        - state: VA
+        - has_children: true
+    question: "Are you maximizing your Virginia 529 deduction? You can deduct $4,000 per account per year."
+
+  - id: va_dc_comparison
+    trigger:
+      all:
+        - state: VA
+      any:
+        - spouse_state: DC
+        - works_in: DC
+    question: "Have you compared your tax burden if you both lived in VA vs DC? The difference can be $10K+ at your income level."
+
+  - id: va_estimated_timing
+    trigger:
+      all:
+        - state: VA
+        - has_estimated_payments: true
+    question: "Remember Virginia Q1 estimated tax is due May 1, not April 15. Are your payments timed correctly?"

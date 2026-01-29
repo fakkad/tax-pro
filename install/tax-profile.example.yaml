@@ -1,0 +1,184 @@
+# =============================================================================
+# TAX-PROFILE.YAML — Your Tax Situation
+# =============================================================================
+#
+# This file stores YOUR tax situation. It's used by the tax-strategist agent
+# to provide personalized advice.
+#
+# SETUP OPTIONS:
+#   1. Run /tax-intake in Claude Code (recommended - guided interview)
+#   2. Copy this file to ~/.claude/tax-profile.yaml and edit manually
+#
+# SECURITY:
+#   - This file contains personal financial info
+#   - NEVER commit to git (it's in .gitignore)
+#   - No SSNs or account numbers needed - just structure
+#
+# =============================================================================
+
+profile_version: "1.0"
+tax_year: 2025
+profile_phase: 1  # 1=flags, 2=documents, 3=amounts, 4=analysis
+last_updated: ""
+
+# =============================================================================
+# PERSONAL INFO
+# =============================================================================
+
+personal:
+  # Options: single, married_filing_jointly, married_filing_separately,
+  #          head_of_household, qualifying_surviving_spouse
+  filing_status: single
+
+  primary:
+    name: ""
+    state_of_residence: ""  # Two-letter code: VA, CA, NY, etc.
+    occupation: ""
+    date_of_birth: ""       # YYYY-MM-DD (for age-based rules)
+
+  # Uncomment if married:
+  # spouse:
+  #   name: ""
+  #   state_of_residence: ""
+  #   occupation: ""
+  #   date_of_birth: ""
+
+  dependents: []
+  # Example:
+  # - name: "Child Name"
+  #   relationship: child  # child, parent, other
+  #   date_of_birth: "2015-03-15"
+
+# =============================================================================
+# INCOME FLAGS — Check all that apply (true/false)
+# =============================================================================
+
+income_flags:
+  w2_employment: false       # Regular job with W-2
+  self_employment_1099: false # Freelance, consulting, gig work
+  rental_income: false       # Rental property income
+  interest_dividends: false  # Bank interest, stock dividends
+  capital_gains: false       # Sold stocks, crypto, property
+  retirement_distributions: false  # 401k/IRA withdrawals
+  social_security: false     # SS benefits
+  unemployment: false        # Unemployment compensation
+
+# =============================================================================
+# DEDUCTION & ACCOUNT FLAGS
+# =============================================================================
+
+deduction_flags:
+  # Retirement accounts you have access to
+  has_401k: false
+  has_403b: false
+  has_traditional_ira: false
+  has_roth_ira: false
+  has_sep_ira: false       # Self-employed
+  has_solo_401k: false     # Self-employed
+
+  # Health accounts
+  has_hsa: false
+  hsa_coverage: self_only  # self_only or family
+  has_fsa: false
+
+  # Itemized deductions (might use instead of standard deduction)
+  mortgage_interest: false
+  state_local_taxes: false
+  property_taxes: false
+  charitable_donations: false
+  medical_expenses: false  # Usually only if >7.5% of AGI
+
+  # Other deductions
+  student_loan_interest: false
+  educator_expenses: false
+  home_office: false       # Must have self-employment
+
+# =============================================================================
+# SPECIAL SITUATIONS
+# =============================================================================
+
+situation_flags:
+  multi_state: false       # Worked/lived in multiple states
+  states_involved: []      # e.g., ["VA", "DC", "MD"]
+
+  equity_compensation: false  # RSUs, ISOs, ESPP, stock options
+  crypto_transactions: false  # Bought/sold crypto
+  foreign_income: false       # Income from outside US
+  foreign_accounts: false     # Accounts >$10K outside US (FBAR)
+
+  rental_property: false      # Own rental real estate
+  num_rental_properties: 0
+
+  business_ownership: false   # Own a business
+  business_entity_type: ""    # sole_prop, llc, s_corp, c_corp, partnership
+
+  prior_year:
+    suspended_pal_losses: false  # Passive losses blocked by PAL rules
+    capital_loss_carryforward: false
+    nol_carryforward: false
+
+# =============================================================================
+# LIFE EVENTS THIS YEAR
+# =============================================================================
+
+life_events:
+  married: false
+  divorced: false
+  had_child: false
+  bought_home: false
+  sold_home: false
+  started_business: false
+  changed_jobs: false
+  retired: false
+
+# =============================================================================
+# DOCUMENTS (populated by /tax-intake after flags)
+# =============================================================================
+
+documents: []
+
+# =============================================================================
+# AMOUNTS (populated in Phase 3)
+# =============================================================================
+
+amounts: {}
+
+# =============================================================================
+# PRIOR YEAR DATA — Key numbers affecting current year strategy
+# =============================================================================
+# For full multi-year history, use ~/.claude/tax-history.yaml
+# This section captures the most strategy-relevant prior year data.
+
+prior_year:
+  # From last year's Form 1040
+  tax_year: 2024
+  adjusted_gross_income: 0        # Line 11
+  taxable_income: 0               # Line 15
+  total_tax_paid: 0               # Line 24
+  effective_rate: 0.00            # total_tax / agi
+
+  # Carryforward amounts (critical for strategy)
+  carryforwards:
+    suspended_pal_total: 0        # Cumulative from Form 8582
+    capital_loss_carryforward: 0  # From Schedule D
+    nol_carryforward: 0
+
+  # Account balances (affects pro-rata rules, conversion strategy)
+  balances:
+    traditional_ira: 0            # Affects backdoor Roth pro-rata
+    roth_ira: 0
+    traditional_401k: 0
+    hsa: 0
+
+  # What strategies did you use last year?
+  strategies_used:
+    did_backdoor_roth: false
+    did_roth_conversion: false
+    roth_conversion_amount: 0
+    did_tax_loss_harvesting: false
+
+# =============================================================================
+# ANALYSIS (generated by tax-strategist agent)
+# =============================================================================
+
+analysis: {}

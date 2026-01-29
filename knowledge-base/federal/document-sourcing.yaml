@@ -1,0 +1,367 @@
+# Document Sourcing Guide
+# WHERE to get each tax document — not just what you need, but how to get it
+
+# =============================================================================
+# INCOME DOCUMENTS
+# =============================================================================
+
+W-2:
+  description: "Wage and Tax Statement from employer"
+  expected_by: "January 31"
+  providers:
+    Workday:
+      path: "Workday → Pay → Tax Documents → W-2"
+      notes: "Many large employers use Workday"
+    ADP:
+      path: "ADP → Myself → Pay & Taxes → Tax Statements"
+      url: "https://my.adp.com"
+    Gusto:
+      path: "Gusto → Documents → Tax Documents"
+    default:
+      path: "Your HR portal → Pay/Payroll → Tax Documents"
+  tips:
+    - "If you left mid-year, check email for electronic delivery notice"
+    - "Can request paper copy if not received by Feb 15"
+    - "Need one W-2 per employer, per person"
+
+1099-NEC:
+  description: "Nonemployee Compensation (freelance/contract income)"
+  expected_by: "January 31"
+  providers:
+    Upwork:
+      path: "Upwork → Settings → Tax Information → Download 1099"
+    Fiverr:
+      path: "Fiverr → Earnings → Tax Documents"
+    default:
+      path: "Contact the company that paid you"
+  tips:
+    - "Required if paid $600+ by a single payer"
+    - "You still owe tax even if no 1099 received"
+    - "Track all 1099 income against your own records"
+
+1099-INT:
+  description: "Interest Income"
+  expected_by: "February 15"
+  providers:
+    Chase:
+      path: "Chase.com → Statements & Documents → Tax Documents"
+    Bank_of_America:
+      path: "BofA → Information & Services → Tax Documents"
+    Capital_One:
+      path: "Capital One → Account Services → Statements → Tax Forms"
+    Marcus:
+      path: "Marcus.com → Documents → Tax Documents"
+    Ally:
+      path: "Ally.com → Documents → Tax Forms"
+    default:
+      path: "Your bank's website → Documents or Statements → Tax Forms"
+  tips:
+    - "Often combined in Consolidated 1099 from brokerages"
+    - "Only issued if interest > $10"
+
+1099-DIV:
+  description: "Dividends and Distributions"
+  expected_by: "February 15"
+  providers:
+    Fidelity:
+      path: "Fidelity.com → Accounts → Tax Forms → Year-End Tax Forms"
+      url: "https://www.fidelity.com/tax-information/tax-forms"
+    Schwab:
+      path: "Schwab.com → Service → Tax Center → View/Print Forms"
+      url: "https://www.schwab.com/taxes"
+    Vanguard:
+      path: "Vanguard.com → My Accounts → Tax Forms"
+    Robinhood:
+      path: "Robinhood app → Account → Statements & History → Tax Documents"
+      notes: "Also available on web at robinhood.com"
+    E-Trade:
+      path: "E-Trade → Accounts → Documents → Tax Documents"
+    default:
+      path: "Your brokerage → Account → Documents → Tax Forms"
+  tips:
+    - "Usually part of Consolidated 1099 (includes INT, DIV, B)"
+    - "Qualified dividends taxed at lower capital gains rates"
+    - "May arrive in waves — check for corrected forms in March"
+
+1099-B:
+  description: "Proceeds from Broker and Barter Exchange Transactions"
+  expected_by: "February 15"
+  providers:
+    Fidelity:
+      path: "Fidelity.com → Accounts → Tax Forms → Year-End Tax Forms"
+      url: "https://www.fidelity.com/tax-information/tax-forms"
+      notes: "RSU sales included here. Download supplemental cost basis info too."
+    Schwab:
+      path: "Schwab.com → Service → Tax Center"
+    Vanguard:
+      path: "Vanguard.com → My Accounts → Tax Forms"
+    Robinhood:
+      path: "Robinhood app → Account → Tax Documents"
+      notes: "Also download Consolidated 1099 PDF for full detail"
+    E-Trade:
+      path: "E-Trade → Accounts → Documents → Tax Documents"
+    Coinbase:
+      path: "Coinbase → Settings → Taxes → Generate Tax Report"
+      notes: "Crypto transactions. May need to use tax software integration."
+    default:
+      path: "Your brokerage → Tax Documents → Consolidated 1099"
+  tips:
+    - "Check cost basis — brokerages often have wrong basis for transferred stocks"
+    - "RSU cost basis = FMV at vest date (Box 1e)"
+    - "Short-term (held < 1 year) vs long-term matters for tax rate"
+
+1099-R:
+  description: "Distributions from Pensions, Annuities, IRAs, etc."
+  expected_by: "January 31"
+  providers:
+    Fidelity:
+      path: "Fidelity.com → Accounts → Tax Forms"
+    Vanguard:
+      path: "Vanguard.com → My Accounts → Tax Forms"
+    TIAA:
+      path: "TIAA.org → My Account → Tax Forms"
+    Schwab:
+      path: "Schwab.com → Service → Tax Center"
+    default:
+      path: "Your retirement account provider → Tax Documents"
+  tips:
+    - "Box 7 code tells you the type of distribution"
+    - "Code G = direct rollover (not taxable)"
+    - "Early withdrawal (before 59½) may have 10% penalty"
+
+K-1:
+  description: "Partner's/Shareholder's Share of Income (from partnership, S-Corp, or trust)"
+  expected_by: "March 15 (often late)"
+  providers:
+    LLC_Partnership:
+      path: "Your accountant or partnership administrator prepares and sends this"
+      notes: "The partnership files Form 1065, then issues K-1s to partners"
+    S_Corp:
+      path: "Your accountant prepares after S-Corp files Form 1120-S"
+    Trust:
+      path: "Trustee or trust administrator provides after filing Form 1041"
+    default:
+      path: "Contact entity administrator or your CPA"
+  tips:
+    - "K-1s are notoriously late — often arrive in late March or April"
+    - "You may need to file an extension while waiting"
+    - "Keep prior year K-1 handy — some items carry forward"
+
+SSA-1099:
+  description: "Social Security Benefit Statement"
+  expected_by: "January 31"
+  providers:
+    SSA:
+      path: "my Social Security account → Replace Your Tax Form SSA-1099"
+      url: "https://www.ssa.gov/myaccount/"
+      notes: "Create account at ssa.gov if you don't have one"
+    default:
+      path: "ssa.gov → my Social Security → Tax Form"
+  tips:
+    - "Up to 85% of SS benefits may be taxable depending on income"
+    - "Can request replacement online if lost"
+
+# =============================================================================
+# DEDUCTION DOCUMENTS
+# =============================================================================
+
+1098:
+  description: "Mortgage Interest Statement"
+  expected_by: "January 31"
+  providers:
+    Rocket_Mortgage:
+      path: "RocketMortgage.com → Sign In → Documents → Tax Documents"
+    Chase:
+      path: "Chase.com → Mortgage → Documents → Tax Documents"
+    Wells_Fargo:
+      path: "WellsFargo.com → Mortgage → Account Activity → Documents"
+    LoanDepot:
+      path: "LoanDepot → My Account → Documents"
+    default:
+      path: "Your mortgage servicer's website → Documents → Tax Forms"
+  tips:
+    - "Box 1 = mortgage interest paid (the deductible amount)"
+    - "Box 5 = property taxes paid through escrow"
+    - "If loan was sold/transferred, may receive multiple 1098s"
+
+1098-E:
+  description: "Student Loan Interest Statement"
+  expected_by: "January 31"
+  providers:
+    Nelnet:
+      path: "Nelnet.com → Account → Documents → Tax Documents"
+    Great_Lakes:
+      path: "MyGreatLakes.org → Account → Tax Information"
+    FedLoan:
+      path: "FedLoan.org → Account → Tax Information"
+    Navient:
+      path: "Navient.com → Account → Documents"
+    SoFi:
+      path: "SoFi.com → Account → Documents → Tax Documents"
+    default:
+      path: "Your loan servicer → Account → Tax Documents"
+  tips:
+    - "Deduction phases out at higher incomes ($85K single, $175K MFJ)"
+    - "Max deduction is $2,500"
+    - "Must have paid at least $600 in interest to receive form"
+
+1099-SA:
+  description: "Distributions from HSA, Archer MSA, or Medicare Advantage MSA"
+  expected_by: "January 31"
+  providers:
+    Fidelity:
+      path: "Fidelity.com → Accounts → HSA → Tax Forms"
+    HSA_Bank:
+      path: "HSAbank.com → Documents → Tax Forms"
+    Optum:
+      path: "Optum Bank → Statements → Tax Forms"
+    HealthEquity:
+      path: "HealthEquity.com → Documents → Tax Forms"
+    Lively:
+      path: "Lively → Documents → Tax Documents"
+    default:
+      path: "Your HSA administrator → Documents → Tax Forms"
+  tips:
+    - "Only issued if you took distributions"
+    - "Keep receipts for qualified medical expenses"
+    - "Non-qualified distributions = taxable + 20% penalty (if under 65)"
+
+5498-SA:
+  description: "HSA, Archer MSA, or Medicare Advantage MSA Information"
+  expected_by: "May 31"
+  providers:
+    Fidelity:
+      path: "Fidelity.com → Accounts → HSA → Tax Forms"
+    default:
+      path: "Your HSA administrator → Documents → Tax Forms"
+  tips:
+    - "Informational form showing contributions (not needed to file)"
+    - "Arrives after tax deadline — verify contributions via account statement"
+    - "Shows total contributions including employer contributions"
+
+Donation_Receipts:
+  description: "Charitable contribution receipts"
+  expected_by: "Self-collected throughout year"
+  providers:
+    default:
+      path: "Collect from each charity after donation"
+  tips:
+    - "Donations $250+ require written acknowledgment from charity"
+    - "Non-cash donations $500+ require Form 8283"
+    - "Keep bank/credit card statements as backup"
+    - "For appreciated stock donations, get acknowledgment stating no goods/services received"
+
+Property_Tax_Statement:
+  description: "Real estate property tax paid"
+  expected_by: "Self-collected"
+  providers:
+    default:
+      path: "Your county tax assessor's website → Property Tax → View Account"
+      notes: "Search '[Your County] property tax' to find the right site"
+  tips:
+    - "Also shown on Form 1098 Box 5 if paid through escrow"
+    - "SALT deduction capped at $10,000 total"
+    - "Include all properties you own"
+
+# =============================================================================
+# EQUITY COMPENSATION DOCUMENTS
+# =============================================================================
+
+RSU_Statement:
+  description: "RSU vesting and sale details"
+  expected_by: "February 15"
+  providers:
+    Fidelity:
+      path: "Fidelity NetBenefits → Stock Plans → Tax Information"
+      url: "https://netbenefits.fidelity.com"
+      notes: "Download supplemental tax info for cost basis"
+    E-Trade:
+      path: "E-Trade → Stock Plans → Tax Center"
+    Morgan_Stanley:
+      path: "stockplanconnect.com → Tax Center"
+    Schwab:
+      path: "Schwab → Stock Plan Center → Tax Documents"
+    default:
+      path: "Your equity plan administrator → Tax Center"
+  tips:
+    - "Cost basis = FMV at vesting (this is your W-2 income)"
+    - "Gain/loss after vesting is capital gain/loss"
+    - "Verify 1099-B cost basis matches your records"
+    - "Sell-to-cover transactions are taxable sales"
+
+3921:
+  description: "Exercise of Incentive Stock Option (ISO)"
+  expected_by: "January 31"
+  providers:
+    default:
+      path: "Your equity plan administrator → Tax Documents"
+  tips:
+    - "ISO exercise is NOT immediately taxable (unless AMT triggered)"
+    - "Hold 1 year from exercise + 2 years from grant for favorable treatment"
+    - "Disqualifying disposition = ordinary income"
+
+3922:
+  description: "Transfer of Stock Acquired Through ESPP"
+  expected_by: "January 31"
+  providers:
+    default:
+      path: "Your equity plan administrator → Tax Documents"
+  tips:
+    - "ESPP discount is ordinary income (taxed at sale)"
+    - "Hold 1 year from purchase + 2 years from grant for favorable treatment"
+    - "Track your cost basis carefully"
+
+# =============================================================================
+# CRYPTO DOCUMENTS
+# =============================================================================
+
+Crypto_Report:
+  description: "Cryptocurrency transaction history"
+  expected_by: "February 15"
+  providers:
+    Coinbase:
+      path: "Coinbase → Settings → Taxes → Download Tax Reports"
+      url: "https://www.coinbase.com/settings/taxes"
+      notes: "Can integrate with tax software (TurboTax, etc.)"
+    Gemini:
+      path: "Gemini → Account → Documents → Tax Documents"
+    Kraken:
+      path: "Kraken → History → Export"
+    Binance_US:
+      path: "Binance.US → Orders → Tax Reports"
+    default:
+      path: "Your exchange → Account/Settings → Tax Documents"
+  tips:
+    - "Each crypto sale is a taxable event"
+    - "Track cost basis carefully across exchanges"
+    - "Consider crypto tax software (CoinTracker, Koinly) for complex holdings"
+    - "Staking rewards = ordinary income at FMV when received"
+
+# =============================================================================
+# FOREIGN DOCUMENTS
+# =============================================================================
+
+FBAR:
+  description: "Report of Foreign Bank and Financial Accounts"
+  expected_by: "April 15 (auto-extended to October 15)"
+  providers:
+    FinCEN:
+      path: "File electronically via BSA E-Filing"
+      url: "https://bsaefiling.fincen.treas.gov/"
+  tips:
+    - "Required if foreign accounts exceed $10,000 at any time during year"
+    - "Aggregate balance across ALL foreign accounts"
+    - "Penalties are severe for non-filing"
+    - "Separate from tax return — file directly with FinCEN"
+
+8938:
+  description: "Statement of Specified Foreign Financial Assets (FATCA)"
+  expected_by: "With tax return"
+  providers:
+    default:
+      path: "Self-reported on Form 8938 with tax return"
+  tips:
+    - "Threshold: $50K on last day OR $75K at any time (single, US)"
+    - "Higher thresholds for MFJ and expats"
+    - "Overlaps with FBAR but different requirements"
+    - "Penalties for non-compliance"

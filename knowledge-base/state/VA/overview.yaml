@@ -1,0 +1,159 @@
+# Virginia Tax Overview — 2025 Tax Year
+# Reference: https://www.tax.virginia.gov/
+
+state_code: VA
+state_name: Virginia
+tax_authority: Virginia Department of Taxation
+tax_authority_url: https://www.tax.virginia.gov/
+
+# =============================================================================
+# TAX STRUCTURE
+# =============================================================================
+
+tax_structure:
+  type: graduated  # Not flat — Virginia has brackets
+
+  # Virginia Income Tax Brackets (2025)
+  # Note: Virginia brackets are relatively compressed
+  brackets:
+    - min: 0
+      max: 3000
+      rate: 0.02  # 2%
+    - min: 3001
+      max: 5000
+      rate: 0.03  # 3%
+    - min: 5001
+      max: 17000
+      rate: 0.05  # 5%
+    - min: 17001
+      max: null   # No upper limit
+      rate: 0.0575  # 5.75%
+
+  # Standard Deduction
+  standard_deduction:
+    single: 8500
+    married_filing_jointly: 17000
+    married_filing_separately: 8500
+    head_of_household: 8500
+
+  # Personal Exemption
+  personal_exemption:
+    per_person: 930
+    age_65_plus_additional: 800
+    blind_additional: 800
+
+# =============================================================================
+# FEDERAL CONFORMITY
+# =============================================================================
+
+federal_conformity:
+  base: federal_agi  # Virginia starts with Federal AGI
+
+  # Virginia "additions" (add back to income)
+  additions:
+    - id: state_tax_refund
+      description: "State tax refund (if deducted federally)"
+
+    - id: bonus_depreciation
+      description: "Portion of federal bonus depreciation not allowed in VA"
+      notes: "VA decoupled from 100% bonus depreciation"
+
+    - id: interest_on_other_state_bonds
+      description: "Interest on bonds from other states"
+
+  # Virginia "subtractions" (reduce income)
+  subtractions:
+    - id: va_529_contribution
+      description: "Virginia 529 plan contributions"
+      limit: 4000  # Per account per year
+      carryforward: true
+      notes: "Contributions over $4K can be carried forward"
+
+    - id: retirement_income
+      description: "Age 65+ retirement income subtraction"
+      limit: varies  # Based on birth date and income
+
+    - id: social_security
+      description: "Social Security (already excluded from federal AGI)"
+      notes: "Not taxable in VA if not taxable federally"
+
+    - id: military_pay
+      description: "Military basic pay subtraction"
+      limit: 15000
+
+    - id: disability_income
+      description: "Disability income subtraction"
+      limit: 20000
+
+# =============================================================================
+# KEY DEADLINES
+# =============================================================================
+
+deadlines:
+  filing_deadline: "May 1"  # Virginia is May 1, not April 15!
+  extension_deadline: "November 1"  # 6-month extension
+  estimated_payment_dates:
+    q1: "May 1"
+    q2: "June 15"
+    q3: "September 15"
+    q4: "January 15"
+
+# =============================================================================
+# NOTABLE FEATURES
+# =============================================================================
+
+notable_features:
+  - id: may_1_deadline
+    description: "Virginia filing deadline is May 1, not April 15"
+    impact: "Extra 2+ weeks after federal deadline"
+
+  - id: 529_deduction
+    description: "Virginia 529 contributions are deductible"
+    impact: "$4,000 per account, unlimited carryforward"
+
+  - id: low_top_rate
+    description: "Top rate is only 5.75%, kicks in at $17,001"
+    impact: "Most filers pay 5.75% on bulk of income"
+
+  - id: no_local_income_tax
+    description: "Virginia has no local income taxes"
+    impact: "Unlike MD, no county taxes on top of state"
+
+# =============================================================================
+# COMPARED TO NEIGHBORS
+# =============================================================================
+
+neighbor_comparison:
+  DC:
+    top_rate: 0.1075  # 10.75%
+    notes: "Much higher rates, but different deductions"
+
+  MD:
+    top_rate: 0.0575  # 5.75% state
+    local_tax: true   # Plus county taxes (up to 3.2%)
+    notes: "Similar state rate, but county tax adds up"
+
+  WV:
+    top_rate: 0.065   # 6.5%
+    notes: "Higher top rate than VA"
+
+# =============================================================================
+# RESOURCES
+# =============================================================================
+
+resources:
+  forms:
+    - name: "Form 760"
+      description: "Virginia Resident Income Tax Return"
+      url: "https://www.tax.virginia.gov/forms"
+
+    - name: "Form 760-PY"
+      description: "Part-Year Resident Return"
+
+    - name: "Schedule ADJ"
+      description: "Additions and Subtractions"
+
+  online_services:
+    - name: "Virginia Tax Online Services"
+      url: "https://www.tax.virginia.gov/online-services"
+      services: ["File returns", "Make payments", "Check refund status"]

@@ -1,0 +1,310 @@
+# Expert Rules — Compound Patterns Lazy Preparers Miss
+# These are the non-obvious interactions that elite tax professionals know.
+# Each rule has a pattern (multiple conditions that interact) and an insight.
+
+# =============================================================================
+# EXPERT RULES
+# =============================================================================
+
+expert_rules:
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # RETIREMENT STRATEGY INTERACTIONS
+  # ───────────────────────────────────────────────────────────────────────────
+
+  - id: backdoor_roth_pro_rata_trap
+    category: retirement
+    pattern:
+      all:
+        - amounts.estimated_agi > 240000  # Over Roth contribution limit
+        - deduction_flags.has_traditional_ira: true
+        - prior_year.balances.traditional_ira > 0
+    insight: |
+      **WARNING: Pro-Rata Rule Trap**
+
+      You want backdoor Roth but have $X in Traditional IRA. The pro-rata rule makes
+      your conversion partially taxable.
+
+      **How it works**: IRS looks at ALL your Traditional IRAs as one pool. If you have
+      $50K pre-tax and contribute $7K non-deductible, then convert $7K to Roth, only
+      ~12% ($7K/$57K) is tax-free. The rest (~$6,100) is taxable.
+
+      **Fix**: Roll your Traditional IRA INTO your 401(k) before doing backdoor Roth.
+      This removes the pre-tax balance from the pro-rata calculation.
+    action: "Contact 401(k) administrator about reverse rollover. Then do backdoor Roth."
+    priority: high
+    source: "IRC § 408(d)(2), Form 8606"
+
+  - id: roth_conversion_qbi_coordination
+    category: retirement
+    pattern:
+      all:
+        - situation_flags.business_ownership: true
+        - deduction_flags.has_traditional_ira: true
+        - prior_year.balances.traditional_ira > 50000
+    insight: |
+      **QBI + Roth Conversion Coordination**
+
+      You have business income (QBI-eligible) and a significant Traditional IRA balance.
+      The 20% QBI deduction effectively lowers your marginal rate in years with high
+      business income.
+
+      **Opportunity**: Convert more to Roth in high-QBI years. Your effective rate on
+      the conversion is lower because QBI is reducing your taxable income.
+
+      **Example**: $50K conversion at 32% bracket = $16K tax. But if QBI deduction
+      is $20K, your effective bracket is closer to 24%, saving ~$4K on the conversion.
+    action: "In years with strong business income, consider larger Roth conversions."
+    priority: medium
+    source: "IRC § 199A, § 408A"
+
+  - id: mega_backdoor_with_regular_backdoor
+    category: retirement
+    pattern:
+      all:
+        - deduction_flags.has_401k: true
+        - amounts.estimated_agi > 240000
+        - deduction_flags.has_roth_ira: true
+    insight: |
+      **Stack Regular + Mega Backdoor Roth**
+
+      If your 401(k) allows after-tax contributions with in-plan Roth conversion,
+      you can do BOTH:
+      1. Regular backdoor Roth IRA: $7,000/person ($14K MFJ)
+      2. Mega backdoor Roth 401(k): up to $46,500/person (2025)
+
+      **Combined**: A married couple could move up to ~$107K into Roth accounts annually.
+    action: "Check if 401(k) allows after-tax contributions + in-plan Roth conversion."
+    priority: medium
+    source: "IRC § 415(c), § 402(c)"
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # REAL ESTATE + TAX INTERACTIONS
+  # ───────────────────────────────────────────────────────────────────────────
+
+  - id: cost_seg_pal_interaction
+    category: real_estate
+    pattern:
+      all:
+        - situation_flags.rental_property: true
+        - situation_flags.prior_year.suspended_pal_losses: true
+    insight: |
+      **Cost Segregation + PAL Interaction**
+
+      You have rental property with suspended passive losses. Cost segregation would
+      accelerate depreciation, creating larger deductions — but if PAL is already
+      suspending your losses, you're just front-loading suspended losses.
+
+      **When cost seg makes sense**:
+      1. You have OTHER passive income to absorb the accelerated losses
+      2. You plan to hold 10+ years (bonus depreciation recapture on sale)
+      3. You expect a large income drop in a future year (losses release at lower rate)
+
+      **When it doesn't**:
+      - Losses already suspended and no passive income to offset
+      - Planning to sell within 5 years (recapture eats the benefit)
+
+      **Cost**: Studies run $5-15K for residential, more for commercial.
+    action: "Only pursue cost seg if you have passive income OR very long hold horizon."
+    priority: low
+    source: "IRC § 167, § 469, § 1245"
+
+  - id: pal_sale_timing_with_income_drop
+    category: real_estate
+    pattern:
+      all:
+        - situation_flags.rental_property: true
+        - situation_flags.prior_year.suspended_pal_losses: true
+        - prior_year.carryforwards.suspended_pal_total > 30000
+      any:
+        - life_events.changed_jobs: true
+        - life_events.retired: true
+    insight: |
+      **PAL Release Timing Opportunity**
+
+      You have $X in suspended passive losses AND you're having an income change
+      (job change or retirement). This is a potential planning opportunity.
+
+      **How PAL release works**: Suspended losses release in FULL when you fully
+      dispose of the property. They offset OTHER income that year.
+
+      **Opportunity**: In a low-income year (gap year, early retirement, sabbatical),
+      your marginal rate is lower. Releasing $50K of PAL at 22% vs 32% saves $5,000.
+
+      **Risk**: Don't let tax tail wag the dog — don't sell a good property just
+      for tax timing. But IF you were planning to sell anyway, timing matters.
+    action: "If considering property sale, model the tax impact in different income years."
+    priority: high
+    source: "IRC § 469(g)"
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # INVESTMENT + INCOME INTERACTIONS
+  # ───────────────────────────────────────────────────────────────────────────
+
+  - id: niit_cliff_effect
+    category: investment
+    pattern:
+      all:
+        - amounts.estimated_agi > 230000
+        - amounts.estimated_agi < 270000
+        - income_flags.interest_dividends: true
+        - income_flags.capital_gains: true
+    insight: |
+      **NIIT Threshold Cliff Effect**
+
+      You're near the Net Investment Income Tax threshold ($250K MFJ, $200K single).
+      This creates a "cliff" where additional investment income gets hit with an
+      extra 3.8% tax.
+
+      **The math**: If you're at $245K AGI with $50K investment income, going to
+      $251K triggers NIIT on ALL $50K of investment income = $1,900 extra tax.
+      That last $6K of income cost you an extra $1,900.
+
+      **Strategies**:
+      1. Defer realizing gains until you're clearly over (no point managing if you'll
+         be well over anyway)
+      2. Harvest losses to stay under
+      3. Shift investment income to tax-advantaged accounts (munis, retirement)
+    action: "Model your MAGI. If close to threshold, consider timing of capital gains."
+    priority: high
+    source: "IRC § 1411"
+
+  - id: rsu_capital_gains_coordination
+    category: investment
+    pattern:
+      all:
+        - situation_flags.equity_compensation: true
+        - income_flags.capital_gains: true
+    insight: |
+      **RSU + Capital Gains Coordination**
+
+      You have both RSUs and capital gains. Remember: RSU gain/loss AFTER vesting
+      is capital gain/loss, not ordinary income.
+
+      **Common mistake**: People think "RSUs = ordinary income" for everything.
+      Wrong. At vesting, FMV is ordinary income (on W-2). After vesting, it's just
+      stock — gains are capital gains, losses are capital losses.
+
+      **Opportunity**:
+      1. Underwater RSUs (price dropped since vesting) can be sold to harvest losses
+      2. RSU losses can offset other capital gains
+      3. Timing RSU sales with loss harvesting maximizes tax efficiency
+    action: "Review RSU cost basis vs current price. Coordinate with overall portfolio tax-loss harvesting."
+    priority: medium
+    source: "IRC § 83, § 1211"
+
+  - id: margin_interest_investment_income_match
+    category: investment
+    pattern:
+      all:
+        - income_flags.interest_dividends: true
+        - income_flags.capital_gains: true
+    insight: |
+      **Margin Interest Deduction**
+
+      If you have a margin account, margin interest is deductible — but only up to
+      your net investment income. Many people forget to deduct this.
+
+      **Limitation**: You can only deduct margin interest against investment income
+      (dividends, interest, short-term gains). Any excess carries forward.
+
+      **Form**: Report on Form 4952 (Investment Interest Expense Deduction).
+    action: "Check year-end statement for margin interest. Claim on Form 4952 if you have investment income."
+    priority: low
+    source: "IRC § 163(d)"
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # DEDUCTION INTERACTIONS
+  # ───────────────────────────────────────────────────────────────────────────
+
+  - id: charitable_bunching_salt_coordination
+    category: deduction
+    pattern:
+      all:
+        - deduction_flags.charitable_donations: true
+        - deduction_flags.state_local_taxes: true
+        - deduction_flags.mortgage_interest: true
+    insight: |
+      **Charitable Bunching + SALT Cap Coordination**
+
+      You have charitable donations, SALT, and mortgage interest. The SALT cap ($10K)
+      may already push you to itemize OR may make bunching more valuable.
+
+      **Analysis**:
+      - If SALT + mortgage > standard deduction: You're already itemizing, charitable
+        donations add to your deduction.
+      - If SALT + mortgage < standard deduction: You need to bunch charitable to make
+        itemizing worthwhile.
+
+      **Strategy**: In "bunching years," push as many charitable donations as possible
+      (2-3 years worth via DAF). In off years, take standard deduction.
+    action: "Model itemized vs standard. If close, consider bunching strategy."
+    priority: medium
+    source: "IRC § 170, § 164(b)(6)"
+
+  - id: appreciated_stock_double_benefit
+    category: deduction
+    pattern:
+      all:
+        - deduction_flags.charitable_donations: true
+        - income_flags.capital_gains: true
+    insight: |
+      **Appreciated Stock Donation — Double Benefit**
+
+      You have charitable intent AND capital gains. Donating appreciated stock
+      (held >1 year) provides two benefits:
+      1. Deduction for full fair market value
+      2. Avoid capital gains tax on the appreciation
+
+      **Example**: Stock bought at $10K, now worth $30K.
+      - Sell and donate cash: $30K deduction, but pay $3K+ in cap gains tax
+      - Donate stock directly: $30K deduction, NO cap gains tax
+
+      **Savings**: Depends on gains, but often 15-23.8% of the appreciation.
+    action: "Donate appreciated stock instead of cash. Most charities and DAFs accept stock."
+    priority: medium
+    source: "IRC § 170(e)(1)"
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # MULTI-FACTOR SITUATIONS
+  # ───────────────────────────────────────────────────────────────────────────
+
+  - id: gap_year_roth_conversion_ladder
+    category: planning
+    pattern:
+      all:
+        - prior_year.balances.traditional_401k > 100000
+      any:
+        - life_events.retired: true
+        - life_events.changed_jobs: true
+    insight: |
+      **Gap Year Roth Conversion Ladder**
+
+      You have a significant Traditional 401(k)/IRA balance and are experiencing
+      an income change. This may be an opportunity for accelerated Roth conversions.
+
+      **Why gap years matter**: In a year with little income, you can convert at
+      lower brackets (10-24% instead of 32%+).
+
+      **Example**:
+      - Regular year: $340K income, 32% bracket
+      - Gap year: $50K income, 12-22% bracket
+      - Convert $100K at 22% = $22K tax
+      - vs converting at 32% later = $32K tax
+      - Savings: $10K
+
+      **Note**: Future RMDs will be taxed at whatever your rate is then. Converting
+      now at a known lower rate beats uncertain future rates.
+    action: "Model gap year conversion scenarios. Consider converting up to the top of 24% bracket."
+    priority: high
+    source: "IRC § 408A(d)"
+
+# =============================================================================
+# USAGE NOTES
+# =============================================================================
+# The tax-strategist agent should:
+# 1. Load this file during profile analysis
+# 2. Evaluate each rule's pattern against profile + prior year data
+# 3. When a pattern matches, include the insight in the analysis
+# 4. These are EXPERT insights — flag as "Things your preparer might miss"
+# 5. Always include the source citation

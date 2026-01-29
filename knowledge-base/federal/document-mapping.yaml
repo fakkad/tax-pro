@@ -1,0 +1,200 @@
+# Document Mapping — Flags → Required Tax Documents
+# Used by /tax-intake to generate personalized document checklist
+
+# =============================================================================
+# INCOME DOCUMENTS
+# =============================================================================
+
+income:
+  w2_employment:
+    forms:
+      - form: W-2
+        description: "Wage and Tax Statement"
+        per: person  # One per person per employer
+        expected_by: "January 31"
+        source_prompt: "employer name"
+
+  self_employment_1099:
+    forms:
+      - form: 1099-NEC
+        description: "Nonemployee Compensation"
+        per: payer
+        expected_by: "January 31"
+        source_prompt: "client/payer name"
+      - form: 1099-K
+        description: "Payment Card and Third Party Network Transactions"
+        per: platform
+        expected_by: "January 31"
+        source_prompt: "platform (PayPal, Stripe, etc.)"
+      - form: 1099-MISC
+        description: "Miscellaneous Income"
+        per: payer
+        expected_by: "February 15"
+        source_prompt: "payer name"
+
+  rental_income:
+    forms:
+      - form: "Rental P&L"
+        description: "Profit & Loss statement for rental property"
+        per: property
+        expected_by: "Self-prepared"
+        source_prompt: "property address or LLC name"
+      - form: K-1
+        description: "Partner's Share of Income (if LLC/partnership)"
+        per: entity
+        expected_by: "March 15"
+        source_prompt: "LLC/partnership name"
+        conditional: business_entity_type in [llc, partnership]
+
+  interest_dividends:
+    forms:
+      - form: 1099-INT
+        description: "Interest Income"
+        per: institution
+        expected_by: "February 15"
+        source_prompt: "bank/institution name"
+      - form: 1099-DIV
+        description: "Dividends and Distributions"
+        per: institution
+        expected_by: "February 15"
+        source_prompt: "brokerage/fund name"
+
+  capital_gains:
+    forms:
+      - form: 1099-B
+        description: "Proceeds from Broker Transactions"
+        per: brokerage
+        expected_by: "February 15"
+        source_prompt: "brokerage name"
+      - form: "Cost Basis Statement"
+        description: "Detailed cost basis for sales"
+        per: brokerage
+        expected_by: "February 15"
+        source_prompt: "brokerage name"
+
+  retirement_distributions:
+    forms:
+      - form: 1099-R
+        description: "Distributions from Pensions, Annuities, IRAs"
+        per: account
+        expected_by: "January 31"
+        source_prompt: "retirement account provider"
+
+  social_security:
+    forms:
+      - form: SSA-1099
+        description: "Social Security Benefit Statement"
+        per: person
+        expected_by: "January 31"
+        source_prompt: "Social Security Administration"
+
+  unemployment:
+    forms:
+      - form: 1099-G
+        description: "Government Payments (Unemployment)"
+        per: state
+        expected_by: "January 31"
+        source_prompt: "state unemployment office"
+
+# =============================================================================
+# DEDUCTION DOCUMENTS
+# =============================================================================
+
+deductions:
+  has_hsa:
+    forms:
+      - form: 1099-SA
+        description: "Distributions from HSA"
+        per: account
+        expected_by: "January 31"
+        source_prompt: "HSA provider"
+      - form: 5498-SA
+        description: "HSA Contributions"
+        per: account
+        expected_by: "May 31"  # Informational, arrives late
+        source_prompt: "HSA provider"
+
+  mortgage_interest:
+    forms:
+      - form: "1098"
+        description: "Mortgage Interest Statement"
+        per: loan
+        expected_by: "January 31"
+        source_prompt: "mortgage lender"
+
+  charitable_donations:
+    forms:
+      - form: "Donation Receipts"
+        description: "Receipts for charitable contributions"
+        per: donation
+        expected_by: "Self-collected"
+        source_prompt: "charity name"
+      - form: "1098-C"
+        description: "Vehicle Donation"
+        per: vehicle
+        expected_by: "January 31"
+        source_prompt: "charity name"
+        conditional: donated_vehicle
+
+  student_loan_interest:
+    forms:
+      - form: 1098-E
+        description: "Student Loan Interest Statement"
+        per: lender
+        expected_by: "January 31"
+        source_prompt: "loan servicer"
+
+  property_taxes:
+    forms:
+      - form: "Property Tax Statement"
+        description: "Annual property tax paid"
+        per: property
+        expected_by: "Self-collected"
+        source_prompt: "county/property address"
+
+# =============================================================================
+# SPECIAL SITUATION DOCUMENTS
+# =============================================================================
+
+situations:
+  equity_compensation:
+    forms:
+      - form: "3921"
+        description: "Exercise of ISO"
+        per: grant
+        expected_by: "January 31"
+        source_prompt: "employer"
+        conditional: equity_types contains iso
+      - form: "3922"
+        description: "ESPP Stock Transfer"
+        per: purchase
+        expected_by: "January 31"
+        source_prompt: "employer"
+        conditional: equity_types contains espp
+      - form: "RSU Statement"
+        description: "RSU vesting and sale details"
+        per: employer
+        expected_by: "February 15"
+        source_prompt: "employer/broker"
+        conditional: equity_types contains rsu
+
+  crypto_transactions:
+    forms:
+      - form: "Crypto Transaction Report"
+        description: "All crypto buys, sells, transfers"
+        per: exchange
+        expected_by: "February 15"
+        source_prompt: "exchange (Coinbase, etc.)"
+
+  foreign_accounts:
+    forms:
+      - form: "FBAR"
+        description: "Foreign Bank Account Report (FinCEN 114)"
+        per: filing
+        expected_by: "April 15 (ext. Oct 15)"
+        source_prompt: "Self-reported"
+      - form: "8938"
+        description: "FATCA Statement of Foreign Assets"
+        per: filing
+        expected_by: "With return"
+        source_prompt: "Self-reported"

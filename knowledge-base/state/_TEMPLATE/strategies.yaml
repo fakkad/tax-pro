@@ -1,0 +1,88 @@
+# [STATE NAME]-Specific Tax Strategies
+# Copy this template and fill in state-specific strategies
+
+strategies:
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # STRATEGY 1: [NAME]
+  # ───────────────────────────────────────────────────────────────────────────
+
+  - id: state_strategy_1
+    name: "[Strategy Name]"
+    category: deduction  # Options: deduction, credit, retirement, education, etc.
+    priority: high  # high, medium, low
+
+    applicable_when:
+      all:
+        - condition_1: true
+        - condition_2: true
+      any:
+        - optional_condition: true
+
+    benefit:
+      type: deduction  # deduction, credit, subtraction, exclusion
+      amount: "$X,XXX"
+      tax_savings: "$XXX (at X.XX%)"
+
+    details: |
+      Explain the strategy in detail.
+
+      **Key Points:**
+      - Point 1
+      - Point 2
+      - Point 3
+
+      **Example:**
+      Show a concrete example if helpful.
+
+    action: |
+      1. Step 1
+      2. Step 2
+      3. Step 3
+
+    deadline: "December 31"  # Or specific deadline
+    source: "[State] Code § XX.X-XXX"
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # STRATEGY 2: [NAME]
+  # ───────────────────────────────────────────────────────────────────────────
+
+  - id: state_strategy_2
+    name: "[Strategy Name]"
+    category: category
+    priority: medium
+
+    applicable_when:
+      all:
+        - condition: true
+
+    benefit:
+      type: benefit_type
+      amount: "Amount"
+
+    details: |
+      Strategy details...
+
+    action: |
+      Action steps...
+
+    source: "Citation"
+
+# =============================================================================
+# STATE-SPECIFIC PROBING QUESTIONS
+# =============================================================================
+
+state_probing_questions:
+
+  - id: probe_1
+    trigger:
+      all:
+        - state: XX
+        - some_condition: true
+    question: "Have you considered [strategy]?"
+
+  - id: probe_2
+    trigger:
+      all:
+        - state: XX
+    question: "Are you aware of [state-specific rule]?"

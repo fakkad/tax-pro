@@ -1,0 +1,67 @@
+# Tax Pro - Security-First .gitignore
+
+# =============================================================================
+# PERSONAL DATA - NEVER COMMIT
+# =============================================================================
+
+# User's tax profile (contains financial situation)
+tax-profile.yaml
+**/tax-profile.yaml
+
+# User's tax history (contains prior year data)
+tax-history.yaml
+**/tax-history.yaml
+
+# Generated CPA packets (contains personal summary)
+# Only match generated packets like tax-packet-2025.md, not the command file
+tax-packet-*.md
+**/tax-packet-*.md
+
+# Any downloaded/uploaded tax documents
+*.pdf
+*.PDF
+tax-docs/
+documents/
+
+# Exported data
+*.csv
+*.xlsx
+export/
+
+# =============================================================================
+# SECRETS & CREDENTIALS
+# =============================================================================
+
+.env
+.env.*
+*.pem
+*.key
+credentials.json
+secrets.yaml
+
+# =============================================================================
+# SYSTEM FILES
+# =============================================================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Editors
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.sublime-*
+
+# =============================================================================
+# BUILD & DEPENDENCIES
+# =============================================================================
+
+node_modules/
+dist/
+build/
+.cache/
